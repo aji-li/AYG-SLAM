@@ -1,0 +1,21 @@
+# Only explicitly selected showcase files may be tracked.
+/*
+!/.gitignore
+!/README.md
+!/README_EN.md
+!/License-gpl.txt
+!/NOTICE.md
+!/examples/
+!/tools/
+!/demo/
+!/docs/
+/examples/**
+!/examples/rgbd_tum_octomap.cc
+!/examples/ros2/
+!/examples/ros2/ayg_slam.launch.py
+/tools/**
+!/tools/summarize_evo_multirun.py
+/demo/**
+!/demo/create_demo_results.py
+/docs/**
+!/docs/PUBLIC_SCOPE.md
