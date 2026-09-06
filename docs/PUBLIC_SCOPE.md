@@ -1,30 +1,43 @@
 # 公开范围 / Public scope
 
-本目录从完整 AYG-SLAM 工作目录中按文件白名单独立复制，使用全新的 Git
-历史。原仓库的源码、提交记录和可见性不受影响。
+本仓库从完整 AYG-SLAM 工作目录按文件白名单复制，使用独立 Git 历史。
+当前 README 采用完整项目的中英文说明，并增加公开范围和视频入口。
 
-This directory is a file-allowlisted export of the AYG-SLAM working tree with a
-fresh Git history. The original repository and its visibility are unchanged.
+This repository is an allowlisted copy of the AYG-SLAM working tree with an
+independent Git history. The READMEs follow the full project's bilingual
+documentation with added public-scope and video links.
 
-| 公开内容 / Included | 来源与调整 / Source and adaptations |
+| 公开内容 / Included | 用途与调整 / Purpose and adaptations |
 | --- | --- |
-| `examples/rgbd_tum_octomap.cc` | RGB-D 入口副本，补回上游版权头；integration excerpt with upstream notice |
-| `examples/ros2/ayg_slam.launch.py` | ROS 2 启动层副本，替换本机数据路径；generic dataset default |
-| `tools/summarize_evo_multirun.py` | 评估脚本副本，外置数据集信息；external sequence counts and output checks |
-| `demo/create_demo_results.py` | 新增独立演示数据生成器；new synthetic fixture generator |
-| README、NOTICE、许可证 | 展示说明、来源说明与原许可证文本；documentation and license |
+| `Examples/RGB-D/*.cc` | RGB-D 数据输入、计时、轨迹输出；RGB-D entry points |
+| `Examples/Stereo/*.cc` | KITTI / EuRoC 双目入口；stereo dataset entry points |
+| `launch/*.py` | ROS 2 启动编排，本机路径已替换；orchestration with generic paths |
+| `scripts/*.sh`、`build*.sh` | 环境、构建和数据集进程管理；environment/build/process management |
+| `Examples/**/*.yaml` | 相机标定和模型入口片段；camera/model settings excerpts |
+| `Examples/RGB-D/*.rviz` | 显示配置；visualization presets |
+| `Examples/pt_to_onnx.py` | 接收用户模型路径的导出工具；export helper accepting a model argument |
+| `tools/`、`demo/` | 评估工具与合成数据示例；evaluation tool and synthetic fixtures |
+| `media/`、`docs/DEMO.md` | 实际数据集录屏和运行说明；actual recording and run notes |
 
-未公开核心跟踪、特征提取与匹配、动态过滤、建图算法实现及其头文件；
-未复制模型、数据集、调参配置、研究计划、实验日志、真实轨迹、二进制文件或原 Git 历史。
+核心跟踪、特征提取与匹配、动态过滤、建图算法及其头文件仍未公开。
+模型权重、数据集、完整参数、研究计划、原始实验日志、真实轨迹文件、二进制
+程序以及原 Git 历史均未复制。视频展示运行结果，不携带源码或调试日志。
 
-Core tracking, feature extraction/matching, dynamic filtering and mapping
-implementations and headers are omitted, along with weights, datasets, tuned
-configurations, research plans, experiment logs, measured trajectories, binaries,
-and the original Git history.
+Core tracking, feature extraction/matching, dynamic filtering, mapping code and
+headers remain private. Weights, datasets, complete tuning, research plans, raw
+logs, measured trajectory files, executables, and original Git history are omitted.
+The video shows application output without source code or debug logs.
 
-RGB-D 和 ROS 2 示例供代码阅读，依赖未公开的完整系统，不能在本仓库中单独编译或启动。
-评估演示只需要 Python 3 标准库，可按 README 独立运行。
+README 中提到的完整参数指南、ALIKED 研究计划和旧环境说明不在公开范围内。
+相关链接因此指向本页。公开 YAML 不含动态过滤阈值和特征融合调参。
 
-The RGB-D and ROS 2 excerpts require the omitted full system and are for source
-review. The evaluation demonstration runs independently with Python 3's standard
-library. This repository does not publish SLAM benchmark claims.
+The complete parameter guide, ALIKED research plan, and older environment notes
+referenced by the original README are omitted; those links lead here. Public YAML
+files exclude dynamic-filter thresholds and feature-fusion tuning.
+
+完整系统的编译和数据集运行需要私有核心、完整配置和模型。仅评估演示可在此
+仓库独立运行，参见 [EVALUATION_DEMO.md](EVALUATION_DEMO.md)。
+
+Full-system builds and dataset runs require the private core, complete settings,
+and models. The evaluation demo runs independently; see
+[EVALUATION_DEMO.md](EVALUATION_DEMO.md).

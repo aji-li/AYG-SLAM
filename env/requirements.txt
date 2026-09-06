@@ -1,0 +1,23 @@
+# Python dependencies used by helper scripts in this repository.
+#
+# Install with:
+#   python3 -m pip install -r requirements.txt
+#
+# Important:
+# - This file does NOT cover the full C++ / ROS / CUDA runtime.
+# - For the full environment, also see:
+#   - apt-requirements.txt
+#   - docs/ENVIRONMENT_SETUP.md
+
+# Used by pt_to_onnx.py to export a trained YOLO .pt model to ONNX.
+ultralytics>=8.3,<9
+onnx>=1.16,<2
+
+# Optional Python-side ONNX Runtime.
+# The main C++ project uses its own vendored ONNX Runtime instead.
+# Uncomment one of the following if you need Python inference tooling:
+# onnxruntime>=1.16,<2
+# onnxruntime-gpu>=1.16,<2
+
+# ROS Python modules such as rospy / roslib are expected from ROS Noetic
+# system packages, not from pip.

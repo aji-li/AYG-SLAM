@@ -1,0 +1,38 @@
+%YAML:1.0
+
+# Public calibration/model excerpt. Private algorithm tuning is omitted.
+# Complete settings and private SLAM core are required to run the full system.
+
+Camera.fx: 535.4
+Camera.fy: 539.2
+Camera.cx: 320.1
+Camera.cy: 247.6
+Camera.k1: 0.0
+Camera.k2: 0.0
+Camera.p1: 0.0
+Camera.p2: 0.0
+Camera.width: 640
+Camera.height: 480
+Camera.fps: 30.0
+Camera.bf: 40.0
+Camera.RGB: 0
+ThDepth: 40.0
+DepthMapFactor: 5000.0
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize:2
+Viewer.CameraSize: 0.08
+Viewer.CameraLineWidth: 3
+Viewer.ViewpointX: 0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -1.8
+Viewer.ViewpointF: 500
+ALIKED.Use: 1
+ALIKED.Model: "aliked-n32"
+YOLO.Use: 1
+YOLO.Model: "../../models/yolo26n-seg.onnx"
+YOLO.Labels: "../../Thirdparty/YOLOs-CPP/models/coco.names"
+YOLO.GPU: 1
+Dynamic.Classes: ["person"]
+PointCloudMapping.Enable: 1

@@ -1,0 +1,39 @@
+%YAML:1.0
+
+# Public calibration/model excerpt. Private algorithm tuning is omitted.
+# Complete settings and private SLAM core are required to run the full system.
+
+Camera.fx: 320
+Camera.fy: 320
+Camera.cx: 320
+Camera.cy: 240
+Camera.k1: 0.0
+Camera.k2: 0.0
+Camera.p1: 0.0
+Camera.p2: 0.0
+Camera.k3: 0.0
+Camera.width: 640
+Camera.height: 480
+Camera.fps: 10.0
+Camera.bf: 458
+Camera.RGB: 0
+ThDepth: 50.0
+DepthMapFactor: 500
+Viewer.KeyFrameSize: 0.10
+Viewer.KeyFrameLineWidth: 2
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2
+Viewer.CameraSize: 0.25
+Viewer.CameraLineWidth: 5
+Viewer.ViewpointX: 0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -1.8
+Viewer.ViewpointF: 500
+ALIKED.Use: 1
+ALIKED.Model: "aliked-n32"
+YOLO.Use: 1
+YOLO.Model: "../../models/yolo26n_uav.onnx"
+YOLO.Labels: "../../models/uav.names"
+YOLO.GPU: 1
+Dynamic.Classes: ["uav"]
+PointCloudMapping.Enable: 1

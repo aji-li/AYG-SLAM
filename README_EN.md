@@ -1,91 +1,305 @@
-# AYG-SLAM · Project and Code Showcase
+# AYG-SLAM
 
 [简体中文](README.md) | **English**
 
-**Visual SLAM for dynamic scenes with ALIKED features, YOLO perception, and geometric constraints.**
+> **Public release scope:** This README follows the full development project's documentation. Only selected engineering code is public. Full-system build and run commands below require the omitted core, complete settings, and model weights. Public settings retain camera calibration and model entry points only; omitted research documents link to [Public Scope](docs/PUBLIC_SCOPE.md).
 
-AYG-SLAM extends ORB-SLAM2 to explore RGB-D / stereo localization and static environment mapping in dynamic scenes, integrating ROS 2 point-cloud publication, OctoMap, and RViz2.
+## Recorded Demo
 
-This repository shares selected engineering code and an independent evaluation example for technical discussion and interviews. Core algorithms remain under research and the full implementation is not public. This is not a reproducible release of the complete SLAM system.
+[![Actual TUM walking_xyz run](media/tum-walking-xyz-preview.gif)](media/tum-walking-xyz.mp4)
 
-[System Overview](#system-overview) · [Code Guide](#code-guide) · [Run the Evaluation Example](#run-the-evaluation-example) · [Acknowledgements](#acknowledgements)
+[Watch / download the recording](media/tum-walking-xyz.mp4) · [Run and recording notes](docs/DEMO.md) · [Standalone evaluation example](docs/EVALUATION_DEMO.md)
 
-## System Overview
+**ALIKED + YOLO + Geometric filtering for dynamic-scene visual SLAM.**
 
-The full project uses ALIKED keypoints and descriptors in the frontend, retains ORB / DBoW2 place recognition for loop closure and relocalization, and combines YOLO detection or segmentation, multi-object tracking, and geometric consistency checks to handle dynamic objects.
+AYG-SLAM extends ORB-SLAM2 with learned local features, dynamic object detection
+and tracking, and geometric consistency checks. It supports RGB-D and stereo
+workflows for camera trajectory estimation and static environment mapping, with
+ROS 2 point-cloud publication, OctoMap integration, and RViz2 visualization.
 
-```mermaid
-flowchart LR
-    A[RGB-D / stereo input] --> B[AYG-SLAM core system]
-    B --> C[Camera trajectory]
-    B --> D[ROS 2 static point clouds]
-    D --> E[OctoMap / RViz2]
-    C --> F[Offline evaluation and summaries]
-```
+The frontend uses ALIKED features, while ORB descriptors and bag-of-words place
+recognition are retained for loop closure and relocalization. Dataset examples
+cover TUM RGB-D, AirSim RGB-D recordings, KITTI stereo, and EuRoC stereo.
 
-Integration involves C++, CUDA / LibTorch, ONNX Runtime, OpenCV, and ROS 2 Humble. The public excerpts demonstrate input validation, runtime orchestration, trajectory output, and evaluation organization. Unpublished algorithm details are omitted.
+[Features](#features) · [Requirements](#requirements) · [Build](#build) ·
+[Run](#run) · [Configuration and Models](#configuration-and-models) ·
+[Documentation](#documentation) · [Acknowledgements](#acknowledgements)
 
-## Code Guide
+## Features
 
-| File | What to inspect | Execution scope |
-| --- | --- | --- |
-| [RGB-D entry point](examples/rgbd_tum_octomap.cc) | Image association loading, size checks, frame timing, trajectory output, ROS lifecycle | Source review; requires omitted core |
-| [ROS 2 orchestration](examples/ros2/ayg_slam.launch.py) | Launch arguments, path validation, process startup, OctoMap and RViz2 configuration | Source review; requires full system installation |
-| [Multi-run evaluation summary](tools/summarize_evo_multirun.py) | evo archive loading, trajectory coverage, run selection, CSV and Markdown output | Independently runnable |
-| [Demo fixture generator](demo/create_demo_results.py) | Reproducible minimal evaluation input | Independently runnable; synthetic data only |
+- **Learned feature frontend:** ALIKED keypoints and descriptors integrated into
+  the ORB-SLAM2 tracking and local mapping pipeline.
+- **Loop closure and relocalization:** ORB-based place recognition with DBoW2.
+- **Dynamic feature filtering:** YOLO detection or segmentation combined with
+  epipolar and depth consistency checks.
+- **Multi-object tracking:** motcpp backends for associating detections across
+  frames, with configurable dynamic classes such as `person` and `uav`.
+- **Static mapping:** filtered local point clouds published as ROS 2
+  `sensor_msgs/PointCloud2` for OctoMap construction.
+- **Visualization:** Pangolin SLAM viewer and RViz2 displays for point clouds,
+  occupancy maps, TF, dynamic 3D boxes, and UAV meshes.
 
-The excerpts were copied from the full project and adapted for this showcase; see [NOTICE.md](NOTICE.md) for provenance. The RGB-D entry point extends the ORB-SLAM2 example. Upstream work is not presented as original work by this project.
+## Requirements
 
-## Run the Evaluation Example
+The current build scripts target **Ubuntu 22.04 and ROS 2 Humble**.
 
-Python 3 is required; only the standard library is used. Run from the repository root:
+| Component | Requirement / current configuration |
+| --- | --- |
+| Compiler | GCC / G++ 11; scripts default to `gcc-11` and `g++-11` |
+| Build tools | CMake 3.26 or newer; Ninja by default |
+| Computer vision | OpenCV 4.x, Eigen 3, Pangolin |
+| C++ libraries | yaml-cpp, Boost, bundled DBoW2 and g2o |
+| ALIKED inference | LibTorch and CUDA Toolkit 12.1 or newer |
+| YOLO inference | ONNX Runtime GPU 1.18.0 |
+| ROS integration | ROS 2 Humble and `ament_cmake` |
+| Mapping and visualization | PCL, OctoMap, ROS 2 `octomap_server`, RViz2 |
+| Python utilities | Python 3.10; packages in [env/requirements.txt](env/requirements.txt) |
 
-```bash
-python3 demo/create_demo_results.py demo-output
-python3 tools/summarize_evo_multirun.py \
-  demo-output/runs demo-output/summary \
-  --expected-poses demo-output/expected_poses.json
-```
-
-Outputs include `demo-output/summary/all_runs.csv`, `README.md`, and copies of the selected `best_ate/` and `best_rpe/` runs. Use a new output directory when repeating the example.
-
-Selection first maximizes the number of valid trajectory poses, then independently minimizes ATE and RPE RMSE. The example should select `run_1` for best ATE and `run_2` for best RPE. The incomplete `run_3` should not win despite its lower error.
-
-**All demo trajectories and errors are synthetic fixtures for checking tool behavior, not measured AYG-SLAM accuracy.** The script summarizes existing metrics; it does not align trajectories or calculate ATE / RPE.
-
-For your own evaluation data, use this layout and supply a JSON object mapping each sequence name to its expected pose count:
+The build expects these dependencies to be available locally:
 
 ```text
-runs/<sequence>/run_1/
-├── CameraTrajectory.txt
-├── ape.zip                 # Contains stats.json with at least an rmse field
-├── rpe.zip                 # Same archive structure
-└── rpe_point_distance.zip  # Optional, same archive structure
+Thirdparty/libtorch/
+Thirdparty/Pangolin/install/
+Thirdparty/YOLOs-CPP/onnxruntime-linux-x64-gpu-1.18.0/
 ```
 
-Use consistent alignment, translational errors in meters, and RPE settings across compared runs. Expected pose counts must match the input sequences.
+Prepare these libraries and the model weights before building; a source checkout
+alone may not contain the large binary dependencies. Use LibTorch and ONNX
+Runtime builds compatible with your CUDA environment.
 
-## Public Scope
+[scripts/setup_humble.sh](scripts/setup_humble.sh) configures the local library
+paths and defaults to `/usr/local/cuda-12.1`. Adjust that script if your dependency
+locations differ. The current motcpp build sets `MOTCPP_ENABLE_ONNX=OFF`, disabling
+its ONNX-based ReID backend.
 
-Only the code listed above and showcase documentation are included. Core algorithms, model weights, datasets, tuned configurations, and experiment records are withheld. See [Public Scope](docs/PUBLIC_SCOPE.md).
+## Build
 
-The development and showcase repositories have independent Git histories. This repository provides neither a full-system build entry point nor binaries that substitute for the omitted core source.
+Run the following commands from the repository root after installing the
+required dependencies:
+
+```bash
+source scripts/setup_humble.sh
+```
+
+Both build modes require the ROS 2 Humble environment because the root project
+uses `ament_cmake`. The scripts build DBoW2 and g2o and extract
+`Vocabulary/ORBvoc.txt.tar.gz` automatically.
+
+### RGB-D SLAM
+
+```bash
+./build.sh
+```
+
+This uses `build_native/` and produces `Examples/RGB-D/rgbd_tum`.
+
+### RGB-D SLAM with OctoMap
+
+```bash
+./build_octomap.sh
+```
+
+This uses `build_humble/` and produces `Examples/RGB-D/rgbd_tum_octomap`.
+
+To also build the stereo OctoMap examples in the same build directory:
+
+```bash
+cmake --build build_humble --parallel 4 \
+  --target stereo_kitti_octomap stereo_euroc_octomap
+```
+
+The scripts accept `BUILD_DIR`, `JOBS`, `CMAKE_BIN`, and
+`ORB_SLAM2_OPENCV_DIR` overrides. For example, to use system CMake and limit
+parallel compilation:
+
+```bash
+CMAKE_BIN="$(command -v cmake)" JOBS=4 ./build_octomap.sh
+```
+
+Build the two modes sequentially: they share third-party build directories and
+source-tree outputs such as `lib/libORB_SLAM2.so`.
+
+For a ROS 2 workspace build and installed launch files, see
+[ROS 2 package instructions](docs/ROS2_PACKAGE.md).
+
+## Run
+
+Run these examples from the repository root. Replace `/path/to/...` with your
+own dataset paths; the wrapper scripts contain machine-specific defaults, so
+explicit arguments are recommended.
+
+### Prepare RGB-D data
+
+TUM and AirSim RGB-D runs take four arguments: vocabulary, camera settings,
+sequence directory, and an RGB/depth association file. Each association line
+contains:
+
+```text
+rgb_timestamp rgb/image.png depth_timestamp depth/image.png
+```
+
+Image paths are relative to the sequence directory. Set the camera calibration,
+depth scale, model paths, and dynamic classes in the dataset YAML before running.
+
+### TUM RGB-D
+
+For trajectory estimation with the normal build:
+
+```bash
+source scripts/setup_humble.sh
+./Examples/RGB-D/rgbd_tum \
+  Vocabulary/ORBvoc.txt \
+  Examples/RGB-D/TUM3.yaml \
+  /path/to/tum_sequence \
+  /path/to/associations.txt
+```
+
+For the OctoMap pipeline, after building the OctoMap variant:
+
+```bash
+./scripts/run_octomap_tum.sh \
+  Vocabulary/ORBvoc.txt \
+  Examples/RGB-D/TUM3.yaml \
+  /path/to/tum_sequence \
+  /path/to/associations.txt
+```
+
+### AirSim RGB-D
+
+```bash
+./scripts/run_octomap_airsim.sh \
+  Vocabulary/ORBvoc.txt \
+  Examples/RGB-D/airsim_new.yaml \
+  /path/to/airsim_sequence \
+  /path/to/associations.txt
+```
+
+AirSim recordings must use the RGB-D association format above and a camera/depth
+configuration matching the recording.
+
+### KITTI stereo
+
+The sequence directory must contain `image_0/`, `image_1/`, and `times.txt`.
+Choose the YAML that matches the sequence calibration.
+
+```bash
+./scripts/run_octomap_kitti.sh \
+  Vocabulary/ORBvoc.txt \
+  Examples/Stereo/KITTI00-02.yaml \
+  /path/to/kitti/sequences/00
+```
+
+### EuRoC stereo
+
+```bash
+./scripts/run_octomap_euroc.sh \
+  Vocabulary/ORBvoc.txt \
+  Examples/Stereo/EuRoC.yaml \
+  /path/to/MH_01_easy/mav0/cam0/data \
+  /path/to/MH_01_easy/mav0/cam1/data \
+  Examples/Stereo/EuRoC_TimeStamps/MH01.txt
+```
+
+### ROS 2 mapping and outputs
+
+The OctoMap wrappers source the Humble environment, start `octomap_server`,
+optionally start RViz2, and run the SLAM executable. The mapping data flow is:
+
+```text
+RGB-D / stereo images → AYG-SLAM → /AYG/Local_Point_Clouds
+                                          ↓
+                                    octomap_server
+                                          ↓
+                                   /octomap_binary → RViz2
+```
+
+Set `START_RVIZ=0` before a wrapper command to disable RViz2. This controls RViz2
+only; configure the SLAM viewer separately if needed.
+
+RGB-D runs write `CameraTrajectory.txt` and `KeyFrameTrajectory.txt` in the
+working directory. Installed ROS 2 launch
+files use `~/.ros/ayg_slam` as the default output directory. Generated trajectories
+and maps are runtime outputs.
+
+## Configuration and Models
+
+| Workflow | Settings | YOLO model expected by the settings |
+| --- | --- | --- |
+| TUM RGB-D | [TUM3.yaml](Examples/RGB-D/TUM3.yaml) | `models/yolo26n-seg.onnx` |
+| AirSim RGB-D | [airsim_new.yaml](Examples/RGB-D/airsim_new.yaml) | `models/yolo26n_uav.onnx` |
+| KITTI stereo | [KITTI00-02.yaml](Examples/Stereo/KITTI00-02.yaml), [KITTI03.yaml](Examples/Stereo/KITTI03.yaml), [KITTI04-12.yaml](Examples/Stereo/KITTI04-12.yaml) | Check the selected YAML |
+| EuRoC stereo | [EuRoC.yaml](Examples/Stereo/EuRoC.yaml) | Check the selected YAML |
+
+ALIKED loads weights from `models/<model-name>.pt`; the RGB-D configurations
+currently select `aliked-n32`. Ensure the selected ALIKED weights, YOLO ONNX model,
+and label file exist before running. Custom UAV weights must match your label
+file and detector configuration.
+
+RViz2 presets are available for
+[TUM](Examples/RGB-D/octomap_view_tum.rviz) and
+[AirSim](Examples/RGB-D/octomap_view_airsim.rviz). For parameter descriptions, see
+[the AirSim / TUM configuration guide](docs/PUBLIC_SCOPE.md).
+
+[Examples/pt_to_onnx.py](Examples/pt_to_onnx.py) provides a YOLO export utility.
+Its optional Python dependencies can be installed with:
+
+```bash
+python3 -m pip install -r env/requirements.txt
+```
+
+These Python packages do not install the C++ / CUDA / ROS dependencies.
+
+## Repository Layout
+
+```text
+AYG-SLAM/
+├── src/                 # SLAM, ALIKED, YOLO/MOT, and mapping implementation
+├── include/             # C++ headers
+├── Examples/            # Dataset executables, camera settings, and RViz presets
+├── launch/              # ROS 2 launch files
+├── scripts/             # Build, environment, run, and evaluation helpers
+├── Thirdparty/          # Third-party sources and local runtime dependencies
+├── Vocabulary/          # ORB bag-of-words vocabulary
+├── models/              # Local ALIKED and YOLO weights and labels
+├── 3dmod/               # UAV visualization meshes
+├── env/                 # Dependency lists
+└── docs/                # Setup, configuration, and integration notes
+```
+
+## Documentation
+
+- [ROS 2 package build and launch](docs/ROS2_PACKAGE.md)
+- [AirSim / TUM configuration guide](docs/PUBLIC_SCOPE.md)
+- [ALIKED integration notes](docs/PUBLIC_SCOPE.md)
+- [Original ORB-SLAM2 README](https://github.com/raulmur/ORB_SLAM2)
+
+The older [environment notes](docs/PUBLIC_SCOPE.md) and
+[system package list](docs/PUBLIC_SCOPE.md) contain ROS 1 / Noetic references.
+Use the Humble configuration in this README and the ROS 2 package guide for the
+current build.
 
 ## Acknowledgements
 
-The full AYG-SLAM project builds on the following open-source work. We thank their authors and maintainers:
+We thank the authors and maintainers of the following open-source projects.
+AYG-SLAM builds on their implementations and research:
 
-| Project | Role |
+| Project | Contribution to AYG-SLAM |
 | --- | --- |
-| [ORB-SLAM2](https://github.com/raulmur/ORB_SLAM2) | Base SLAM architecture and RGB-D example |
-| [ALIKED](https://github.com/Shiaoming/ALIKED) | Learned local features |
-| [YOLOs-CPP](https://github.com/Geekgineer/YOLOs-CPP) | C++ detection and segmentation inference |
-| [motcpp](https://github.com/Geekgineer/motcpp) | Multi-object tracking |
-| [octomap_server / octomap_mapping](https://github.com/OctoMap/octomap_mapping) | Point-cloud and occupancy mapping integration |
-| [Pangolin](https://github.com/stevenlovegrove/Pangolin) | SLAM visualization |
-| [g2o](https://github.com/RainerKuemmerle/g2o) | Graph optimization |
-| [DBoW2](https://github.com/dorian3d/DBoW2) | Bag-of-words place recognition |
+| [ORB-SLAM2](https://github.com/raulmur/ORB_SLAM2) | Base SLAM architecture, tracking, local mapping, loop closure, and relocalization. |
+| [ALIKED](https://github.com/Shiaoming/ALIKED) | Learned keypoint detection and local descriptor extraction. |
+| [YOLOs-CPP](https://github.com/Geekgineer/YOLOs-CPP) | C++ YOLO detection and segmentation inference. |
+| [motcpp](https://github.com/Geekgineer/motcpp) | Multi-object tracking backends used with YOLO detections. |
+| [octomap_server / octomap_mapping](https://github.com/OctoMap/octomap_mapping) | ROS point-cloud integration and OctoMap occupancy mapping. |
+| [Pangolin](https://github.com/stevenlovegrove/Pangolin) | Interactive SLAM visualization. |
+| [g2o](https://github.com/RainerKuemmerle/g2o) | Graph optimization and bundle adjustment. |
+| [DBoW2](https://github.com/dorian3d/DBoW2) | Bag-of-words place recognition for loop detection and relocalization. |
 
-## License and Provenance
+The bundled DBoW2 and g2o versions originate from the ORB-SLAM2 distribution.
+Please refer to the upstream repositories for their publications and citation
+instructions when using this work in research.
 
-See [NOTICE.md](NOTICE.md) and the [GPLv3 license](License-gpl.txt) for the selected code's license and provenance. Upstream copyright notices are retained.
+## License
+
+See [LICENSE.txt](LICENSE.txt) and [License-gpl.txt](License-gpl.txt) for the
+repository's existing GPLv3 license notices. Third-party components retain their
+respective licenses; consult the license files in their source directories.
