@@ -42,6 +42,17 @@ Dataset examples cover TUM RGB-D, AirSim RGB-D recordings, KITTI stereo, and EuR
 - **Visualization:** Pangolin SLAM viewer and RViz2 displays for point clouds,
   occupancy maps, TF, dynamic 3D boxes, and UAV meshes.
 
+### Code Guide
+
+| Module | Main responsibilities |
+| --- | --- |
+| [ALIKEDextractor](src/ALIKEDextractor.cc) | Model loading, inference-device selection, and runtime wrapper |
+| [System](src/System.cc) | Image input interfaces, thread cleanup, and trajectory export |
+| [Frame](src/Frame.cc), [KeyFrame](src/KeyFrame.cc), [MapPoint](src/MapPoint.cc) | Frame poses, keyframe covisibility, and map-point observations |
+| [YoloDetector](src/YoloDetector.cc), [YoloSegDetector](src/YoloSegDetector.cc) | Detection/segmentation inference interfaces and track association |
+| [PointCloudMapping](src/PointCloudMapping.cc) | Keyframe queues, coordinate transforms, ROS point clouds, and markers |
+| [FrameDrawer](src/FrameDrawer.cc), [MapDrawer](src/MapDrawer.cc), [Viewer](src/Viewer.cc) | Image overlays, map rendering, and interactive display |
+
 ## Requirements
 
 The current build scripts target **Ubuntu 22.04 and ROS 2 Humble**.

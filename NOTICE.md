@@ -4,6 +4,9 @@
   examples, with AYG-SLAM integration changes. Upstream copyright and license
   headers are preserved or restored on the derived OctoMap entry points.
   Upstream: https://github.com/raulmur/ORB_SLAM2.
+- SLAM data structures and visualization modules under `src/` and `include/`
+  retain their ORB-SLAM2 copyright headers. ALIKED inference wrappers, YOLO
+  bridges, and ROS point-cloud integration are copied from the AYG-SLAM project.
 - Launch, build, environment, and dataset scripts are copied from AYG-SLAM.
   Machine-specific dataset paths have been replaced with generic placeholders.
 - YAML configurations describe camera calibration and model entry points.

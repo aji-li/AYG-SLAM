@@ -33,6 +33,17 @@ AYG-SLAM 基于 ORB-SLAM2，前端采用 ALIKED 特征，结合动态目标检�
 - **静态环境建图：** 将过滤后的局部点云以 ROS 2 `sensor_msgs/PointCloud2` 消息发布，用于 OctoMap 建图。
 - **可视化：** 提供 Pangolin SLAM 查看器，并通过 RViz2 展示点云、占据地图、TF、动态目标三维包围框和无人机网格模型。
 
+### 代码导读
+
+| 模块 | 主要内容 |
+| --- | --- |
+| [ALIKEDextractor](src/ALIKEDextractor.cc) | 模型加载、推理设备选择与运行封装 |
+| [System](src/System.cc) | 图像输入接口、线程回收与轨迹导出 |
+| [Frame](src/Frame.cc)、[KeyFrame](src/KeyFrame.cc)、[MapPoint](src/MapPoint.cc) | 帧位姿、关键帧共视关系与地图点观测管理 |
+| [YoloDetector](src/YoloDetector.cc)、[YoloSegDetector](src/YoloSegDetector.cc) | 检测与分割推理接口、跟踪结果关联 |
+| [PointCloudMapping](src/PointCloudMapping.cc) | 关键帧队列、坐标变换、ROS 点云与标记发布 |
+| [FrameDrawer](src/FrameDrawer.cc)、[MapDrawer](src/MapDrawer.cc)、[Viewer](src/Viewer.cc) | 图像叠加、地图绘制与交互显示 |
+
 ## 环境依赖
 
 当前构建脚本面向 **Ubuntu 22.04 和 ROS 2 Humble**。
