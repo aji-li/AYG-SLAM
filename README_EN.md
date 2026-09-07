@@ -1,4 +1,6 @@
-# AYG-SLAM
+# SLAM System Based on Learned Features and Dynamic Feature Removal
+
+**AYG-SLAM**
 
 [简体中文](README.md) | **English**
 

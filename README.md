@@ -1,4 +1,6 @@
-# AYG-SLAM
+# 基于学习型特征和动态特征剔除的SLAM系统
+
+**AYG-SLAM**
 
 **简体中文** | [English](README_EN.md)
 
