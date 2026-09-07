@@ -1,6 +1,4 @@
-# SLAM System Based on Learned Features and Dynamic Feature Removal
-
-**AYG-SLAM**
+# AYG-SLAM: SLAM System Based on Learned Features and Dynamic Feature Removal
 
 [简体中文](README.md) | **English**
 
@@ -10,15 +8,12 @@
 
 [Watch / download the recording](media/tum-walking-xyz.mp4) · [Standalone evaluation example](docs/EVALUATION_DEMO.md)
 
-**ALIKED + YOLO + Geometric filtering for dynamic-scene visual SLAM.**
-
-AYG-SLAM extends ORB-SLAM2 with learned local features, dynamic object detection
+AYG-SLAM extends ORB-SLAM2 with ALIKED frontend features, dynamic object detection
 and tracking, and geometric consistency checks. It supports RGB-D and stereo
 workflows for camera trajectory estimation and static environment mapping, with
 ROS 2 point-cloud publication, OctoMap integration, and RViz2 visualization.
 
-The frontend uses ALIKED features. Dataset examples
-cover TUM RGB-D, AirSim RGB-D recordings, KITTI stereo, and EuRoC stereo.
+Dataset examples cover TUM RGB-D, AirSim RGB-D recordings, KITTI stereo, and EuRoC stereo.
 
 [Features](#features) · [Requirements](#requirements) · [Build](#build) ·
 [Run](#run) · [Configuration and Models](#configuration-and-models) ·

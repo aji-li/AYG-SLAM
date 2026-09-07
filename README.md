@@ -1,6 +1,4 @@
-# 基于学习型特征和动态特征剔除的SLAM系统
-
-**AYG-SLAM**
+# AYG-SLAM：基于学习型特征和动态特征剔除的SLAM系统
 
 **简体中文** | [English](README_EN.md)
 
@@ -10,11 +8,9 @@
 
 [观看 / 下载运行视频](media/tum-walking-xyz.mp4) · [独立评估工具示例](docs/EVALUATION_DEMO.md)
 
-**融合 ALIKED、YOLO 与几何约束的动态场景视觉 SLAM 系统。**
+AYG-SLAM 基于 ORB-SLAM2，前端采用 ALIKED 特征，结合动态目标检测与跟踪，以及几何一致性检查，实现动态场景下的相机轨迹估计与静态环境建图。项目支持 RGB-D 和双目输入，集成 ROS 2 点云发布、OctoMap 建图与 RViz2 可视化。
 
-AYG-SLAM 基于 ORB-SLAM2，结合学习型局部特征、动态目标检测与跟踪，以及几何一致性检查，实现动态场景下的相机轨迹估计与静态环境建图。项目支持 RGB-D 和双目输入，集成 ROS 2 点云发布、OctoMap 建图与 RViz2 可视化。
-
-系统前端采用 ALIKED 特征。仓库提供 TUM RGB-D、AirSim RGB-D 录制数据、KITTI 双目和 EuRoC 双目的运行示例。
+仓库提供 TUM RGB-D、AirSim RGB-D 录制数据、KITTI 双目和 EuRoC 双目的运行示例。
 
 [主要功能](#主要功能) · [环境依赖](#环境依赖) · [编译](#编译) ·
 [运行](#运行) · [配置与模型](#配置与模型) ·
