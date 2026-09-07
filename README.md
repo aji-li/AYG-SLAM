@@ -4,19 +4,17 @@
 
 **简体中文** | [English](README_EN.md)
 
-> **公开版本说明：** 本 README 沿用完整研发项目的说明。本仓库仅公开部分工程代码，以下完整系统的编译与运行步骤仍需要未公开的核心源码、完整参数和模型。配置文件仅保留相机标定与模型入口，研究文档链接指向[公开范围说明](docs/PUBLIC_SCOPE.md)。
-
 ## 运行演示
 
 [![TUM walking_xyz 实际运行画面](media/tum-walking-xyz-preview.gif)](media/tum-walking-xyz.mp4)
 
-[观看 / 下载运行视频](media/tum-walking-xyz.mp4) · [运行与录制说明](docs/DEMO.md) · [独立评估工具示例](docs/EVALUATION_DEMO.md)
+[观看 / 下载运行视频](media/tum-walking-xyz.mp4) · [独立评估工具示例](docs/EVALUATION_DEMO.md)
 
 **融合 ALIKED、YOLO 与几何约束的动态场景视觉 SLAM 系统。**
 
 AYG-SLAM 基于 ORB-SLAM2，结合学习型局部特征、动态目标检测与跟踪，以及几何一致性检查，实现动态场景下的相机轨迹估计与静态环境建图。项目支持 RGB-D 和双目输入，集成 ROS 2 点云发布、OctoMap 建图与 RViz2 可视化。
 
-系统前端采用 ALIKED 特征，并保留 ORB 描述子与词袋模型，用于回环检测和重定位。仓库提供 TUM RGB-D、AirSim RGB-D 录制数据、KITTI 双目和 EuRoC 双目的运行示例。
+系统前端采用 ALIKED 特征。仓库提供 TUM RGB-D、AirSim RGB-D 录制数据、KITTI 双目和 EuRoC 双目的运行示例。
 
 [主要功能](#主要功能) · [环境依赖](#环境依赖) · [编译](#编译) ·
 [运行](#运行) · [配置与模型](#配置与模型) ·
@@ -25,7 +23,7 @@ AYG-SLAM 基于 ORB-SLAM2，结合学习型局部特征、动态目标检测与�
 ## 主要功能
 
 - **学习型特征前端：** 将 ALIKED 关键点与描述子集成到 ORB-SLAM2 的跟踪和局部建图流程。
-- **回环检测与重定位：** 保留基于 ORB 和 DBoW2 的地点识别能力。
+- **回环检测与重定位：** 支持地点识别、回环检测与跟踪丢失后的重定位。
 - **动态特征过滤：** 结合 YOLO 检测或分割结果，以及对极几何和深度一致性检查，过滤动态特征。
 - **多目标跟踪：** 使用 motcpp 跟踪后端关联连续帧中的检测结果，支持配置 `person`、`uav` 等动态类别。
 - **静态环境建图：** 将过滤后的局部点云以 ROS 2 `sensor_msgs/PointCloud2` 消息发布，用于 OctoMap 建图。
@@ -198,9 +196,9 @@ RGB-D 程序会在工作目录中输出 `CameraTrajectory.txt` 和 `KeyFrameTraj
 | KITTI 双目 | [KITTI00-02.yaml](Examples/Stereo/KITTI00-02.yaml)、[KITTI03.yaml](Examples/Stereo/KITTI03.yaml)、[KITTI04-12.yaml](Examples/Stereo/KITTI04-12.yaml) | 请检查所选 YAML |
 | EuRoC 双目 | [EuRoC.yaml](Examples/Stereo/EuRoC.yaml) | 请检查所选 YAML |
 
-ALIKED 从 `models/<model-name>.pt` 加载权重，当前 RGB-D 配置选择 `aliked-n32`。运行前请确认对应的 ALIKED 权重、YOLO ONNX 模型和类别标签文件已准备好。自定义无人机模型权重需要与标签文件和检测器配置匹配。
+ALIKED 从 `models/<model-name>.pt` 加载权重，当前 RGB-D 配置选择 `aliked-n32`。运行前请确认对应的 ALIKED 权重、YOLO ONNX 模型和类别标签文件已准备好。自定义模型权重需要与标签文件和检测器配置匹配。
 
-仓库提供 [TUM](Examples/RGB-D/octomap_view_tum.rviz) 和 [AirSim](Examples/RGB-D/octomap_view_airsim.rviz) 的 RViz2 预设。参数说明请参阅 [AirSim / TUM 配置指南](docs/PUBLIC_SCOPE.md)。
+仓库提供 [TUM](Examples/RGB-D/octomap_view_tum.rviz) 和 [AirSim](Examples/RGB-D/octomap_view_airsim.rviz) 的 RViz2 预设。
 
 [Examples/pt_to_onnx.py](Examples/pt_to_onnx.py) 提供 YOLO 模型导出工具，可通过以下命令安装其可选 Python 依赖：
 
@@ -230,11 +228,7 @@ AYG-SLAM/
 ## 相关文档
 
 - [ROS 2 包编译与启动](docs/ROS2_PACKAGE.md)
-- [AirSim / TUM 配置指南](docs/PUBLIC_SCOPE.md)
-- [ALIKED 集成说明](docs/PUBLIC_SCOPE.md)
 - [原始 ORB-SLAM2 README](https://github.com/raulmur/ORB_SLAM2)
-
-较早的[环境说明](docs/PUBLIC_SCOPE.md)和[系统依赖清单](docs/PUBLIC_SCOPE.md)中仍包含 ROS 1 / Noetic 内容。当前构建请以本 README 的 Humble 配置和 ROS 2 包使用说明为准。
 
 ## 致谢
 

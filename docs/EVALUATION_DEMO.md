@@ -26,7 +26,7 @@ runs. Use a new output directory when repeating the example. The tool reads
 existing metrics; it does not calculate errors or align trajectories.
 
 **这里生成的数值是合成测试数据，不代表 SLAM 实测精度。实际运行视频请查看
-[运行与录制说明](DEMO.md)。**
+[运行视频](../media/tum-walking-xyz.mp4)。**
 
 **Generated values are synthetic test fixtures, not measured SLAM accuracy.
-See [Run and recording notes](DEMO.md) for the actual dataset recording.**
+See [the video](../media/tum-walking-xyz.mp4) for the actual dataset recording.**

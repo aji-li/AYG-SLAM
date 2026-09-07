@@ -4,13 +4,11 @@
 
 [简体中文](README.md) | **English**
 
-> **Public release scope:** This README follows the full development project's documentation. Only selected engineering code is public. Full-system build and run commands below require the omitted core, complete settings, and model weights. Public settings retain camera calibration and model entry points only; omitted research documents link to [Public Scope](docs/PUBLIC_SCOPE.md).
-
 ## Recorded Demo
 
 [![Actual TUM walking_xyz run](media/tum-walking-xyz-preview.gif)](media/tum-walking-xyz.mp4)
 
-[Watch / download the recording](media/tum-walking-xyz.mp4) · [Run and recording notes](docs/DEMO.md) · [Standalone evaluation example](docs/EVALUATION_DEMO.md)
+[Watch / download the recording](media/tum-walking-xyz.mp4) · [Standalone evaluation example](docs/EVALUATION_DEMO.md)
 
 **ALIKED + YOLO + Geometric filtering for dynamic-scene visual SLAM.**
 
@@ -19,8 +17,7 @@ and tracking, and geometric consistency checks. It supports RGB-D and stereo
 workflows for camera trajectory estimation and static environment mapping, with
 ROS 2 point-cloud publication, OctoMap integration, and RViz2 visualization.
 
-The frontend uses ALIKED features, while ORB descriptors and bag-of-words place
-recognition are retained for loop closure and relocalization. Dataset examples
+The frontend uses ALIKED features. Dataset examples
 cover TUM RGB-D, AirSim RGB-D recordings, KITTI stereo, and EuRoC stereo.
 
 [Features](#features) · [Requirements](#requirements) · [Build](#build) ·
@@ -31,7 +28,8 @@ cover TUM RGB-D, AirSim RGB-D recordings, KITTI stereo, and EuRoC stereo.
 
 - **Learned feature frontend:** ALIKED keypoints and descriptors integrated into
   the ORB-SLAM2 tracking and local mapping pipeline.
-- **Loop closure and relocalization:** ORB-based place recognition with DBoW2.
+- **Loop closure and relocalization:** Place recognition, loop detection, and
+  recovery after tracking loss.
 - **Dynamic feature filtering:** YOLO detection or segmentation combined with
   epipolar and depth consistency checks.
 - **Multi-object tracking:** motcpp backends for associating detections across
@@ -234,13 +232,12 @@ and maps are runtime outputs.
 
 ALIKED loads weights from `models/<model-name>.pt`; the RGB-D configurations
 currently select `aliked-n32`. Ensure the selected ALIKED weights, YOLO ONNX model,
-and label file exist before running. Custom UAV weights must match your label
+and label file exist before running. Custom model weights must match your label
 file and detector configuration.
 
 RViz2 presets are available for
 [TUM](Examples/RGB-D/octomap_view_tum.rviz) and
-[AirSim](Examples/RGB-D/octomap_view_airsim.rviz). For parameter descriptions, see
-[the AirSim / TUM configuration guide](docs/PUBLIC_SCOPE.md).
+[AirSim](Examples/RGB-D/octomap_view_airsim.rviz).
 
 [Examples/pt_to_onnx.py](Examples/pt_to_onnx.py) provides a YOLO export utility.
 Its optional Python dependencies can be installed with:
@@ -271,14 +268,7 @@ AYG-SLAM/
 ## Documentation
 
 - [ROS 2 package build and launch](docs/ROS2_PACKAGE.md)
-- [AirSim / TUM configuration guide](docs/PUBLIC_SCOPE.md)
-- [ALIKED integration notes](docs/PUBLIC_SCOPE.md)
 - [Original ORB-SLAM2 README](https://github.com/raulmur/ORB_SLAM2)
-
-The older [environment notes](docs/PUBLIC_SCOPE.md) and
-[system package list](docs/PUBLIC_SCOPE.md) contain ROS 1 / Noetic references.
-Use the Humble configuration in this README and the ROS 2 package guide for the
-current build.
 
 ## Acknowledgements
 

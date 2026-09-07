@@ -27,9 +27,7 @@
 !/build.sh
 !/build_octomap.sh
 !/demo/create_demo_results.py
-!/docs/DEMO.md
 !/docs/EVALUATION_DEMO.md
-!/docs/PUBLIC_SCOPE.md
 !/docs/ROS2_PACKAGE.md
 !/env/requirements.txt
 !/launch/airsim.launch.py
