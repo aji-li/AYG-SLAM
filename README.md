@@ -1,6 +1,8 @@
 # AYG-SLAM：基于学习型特征和动态特征剔除的SLAM系统
 
-**简体中文** | [English](README_EN.md)
+<p align="center">
+  <strong>简体中文</strong> | <a href="README_EN.md">English</a>
+</p>
 
 ## 运行演示
 
@@ -12,9 +14,15 @@ AYG-SLAM 基于 ORB-SLAM2，前端采用 ALIKED 特征，结合动态目标检�
 
 仓库提供 TUM RGB-D、AirSim RGB-D 录制数据、KITTI 双目和 EuRoC 双目的运行示例。
 
-[主要功能](#主要功能) · [环境依赖](#环境依赖) · [编译](#编译) ·
-[运行](#运行) · [配置与模型](#配置与模型) ·
-[相关文档](#相关文档) · [致谢](#致谢)
+<p align="center">
+  <a href="#主要功能">主要功能</a> ·
+  <a href="#环境依赖">环境依赖</a> ·
+  <a href="#编译">编译</a> ·
+  <a href="#运行">运行</a> ·
+  <a href="#配置与模型">配置与模型</a> ·
+  <a href="#相关文档">相关文档</a> ·
+  <a href="#致谢">致谢</a>
+</p>
 
 ## 主要功能
 

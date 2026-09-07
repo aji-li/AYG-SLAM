@@ -1,6 +1,8 @@
 # AYG-SLAM: SLAM System Based on Learned Features and Dynamic Feature Removal
 
-[简体中文](README.md) | **English**
+<p align="center">
+  <a href="README.md">简体中文</a> | <strong>English</strong>
+</p>
 
 ## Recorded Demo
 
@@ -15,9 +17,15 @@ ROS 2 point-cloud publication, OctoMap integration, and RViz2 visualization.
 
 Dataset examples cover TUM RGB-D, AirSim RGB-D recordings, KITTI stereo, and EuRoC stereo.
 
-[Features](#features) · [Requirements](#requirements) · [Build](#build) ·
-[Run](#run) · [Configuration and Models](#configuration-and-models) ·
-[Documentation](#documentation) · [Acknowledgements](#acknowledgements)
+<p align="center">
+  <a href="#features">Features</a> ·
+  <a href="#requirements">Requirements</a> ·
+  <a href="#build">Build</a> ·
+  <a href="#run">Run</a> ·
+  <a href="#configuration-and-models">Configuration and Models</a> ·
+  <a href="#documentation">Documentation</a> ·
+  <a href="#acknowledgements">Acknowledgements</a>
+</p>
 
 ## Features
 
