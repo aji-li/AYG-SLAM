@@ -38,3 +38,8 @@ as stated on the dataset website. This recording adds AYG-SLAM feature,
 segmentation, and map visualizations, plus explanatory titles. The previews are
 resized excerpts of the recording. These additions do not imply endorsement by
 the dataset authors. Dataset imagery remains subject to its attribution license.
+
+The AirSim video and previews were recorded with the project's simulation
+sequence `2024-08-01-duouav` (Sequence 3). They show AYG-SLAM image overlays and
+OctoMap occupancy mapping in RViz2. The recording adds panel labels; the
+previews are resized excerpts. AirSim: https://github.com/microsoft/AirSim.

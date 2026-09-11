@@ -1,3 +1,9 @@
+// Instantiate PCL templates with the same Eigen alignment as this translation
+// unit. The system PCL binaries use baseline alignment, whereas -march=native
+// can enable wider alignment; mixing their allocators can crash on cloud cleanup.
+#define PCL_NO_PRECOMPILE
+// Load system FLANN before OpenCV's FLANN headers define USE_UNORDERED_MAP.
+#include <flann/flann.hpp>
 #include "PointCloudMapping.h"
 
 #include <algorithm>

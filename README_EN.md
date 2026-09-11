@@ -6,6 +6,16 @@
 
 ## Recorded Demo
 
+### AirSim Sequence 3: OctoMap Mapping
+
+Recorded with 300 RGB-D frames from `2024-08-01-duouav`. The left panel shows the OctoMap occupied voxels in RViz2, updated as keyframes arrive and colored by height. The right panel shows image feature tracking and dynamic object detections. Voxel resolution is 1 metre.
+
+[![OctoMap construction on AirSim Sequence 3](media/airsim-sequence3-octomap-preview.gif)](media/airsim-sequence3-octomap.mp4)
+
+[Watch / download the AirSim mapping video](media/airsim-sequence3-octomap.mp4)
+
+### TUM walking_xyz: Feature Tracking
+
 [![Actual TUM walking_xyz run](media/tum-walking-xyz-preview.gif)](media/tum-walking-xyz.mp4)
 
 [Watch / download the recording](media/tum-walking-xyz.mp4) · [Standalone evaluation example](docs/EVALUATION_DEMO.md)
