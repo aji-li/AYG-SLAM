@@ -8,7 +8,7 @@
 
 ### AirSim Sequence 3: OctoMap Mapping
 
-[![OctoMap construction on AirSim Sequence 3](media/airsim-sequence3-octomap-preview.gif)](media/airsim-sequence3-octomap.mp4)
+[![OctoMap mapping from the sensor first-person view](media/airsim-sequence3-octomap-preview.gif)](media/airsim-sequence3-octomap.mp4)
 
 [Watch / download the AirSim mapping video](media/airsim-sequence3-octomap.mp4)
 

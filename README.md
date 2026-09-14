@@ -8,7 +8,7 @@
 
 ### AirSim 序列 3：OctoMap 建图
 
-[![AirSim 序列 3 的 OctoMap 建图过程](media/airsim-sequence3-octomap-preview.gif)](media/airsim-sequence3-octomap.mp4)
+[![传感器第一人称视角的 OctoMap 建图过程](media/airsim-sequence3-octomap-preview.gif)](media/airsim-sequence3-octomap.mp4)
 
 [观看 / 下载 AirSim 建图视频](media/airsim-sequence3-octomap.mp4)
 
