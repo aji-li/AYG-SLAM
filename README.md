@@ -1,4 +1,4 @@
-# AYG-SLAM：基于学习型特征和动态特征剔除的SLAM系统
+# AYG-SLAM：基于深度学习的特征提取、动态特征剔除和动态目标三维可视化的SLAM系统
 
 <p align="center">
   <strong>简体中文</strong> | <a href="README_EN.md">English</a>
