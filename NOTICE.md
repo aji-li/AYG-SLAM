@@ -39,10 +39,11 @@ segmentation, and map visualizations, plus explanatory titles. The previews are
 resized excerpts of the recording. These additions do not imply endorsement by
 the dataset authors. Dataset imagery remains subject to its attribution license.
 
-The AirSim video and previews were recorded with the project's simulation
+The AirSim videos and previews were recorded with the project's simulation
 sequence `2024-08-01-duouav` (Sequence 3). They show AYG-SLAM image overlays and
-OctoMap occupancy mapping in RViz2. The recording adds panel labels; the
-previews are resized excerpts. AirSim: https://github.com/microsoft/AirSim.
+OctoMap occupancy mapping in RViz2 from sensor-following and global views. The
+recordings add panel labels; the previews are resized excerpts. AirSim:
+https://github.com/microsoft/AirSim.
 
 Dynamic-object visualization uses the `f250.dae` mesh credited in the project's
 asset notes to [Fast-Racing](https://github.com/ZJU-FAST-Lab/Fast-Racing/blob/main/src/plan_manage/misc/odom_visualization/meshes/f250.dae).

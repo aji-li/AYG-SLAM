@@ -6,11 +6,17 @@
 
 ## 运行演示
 
-### AirSim 序列 3：OctoMap 建图
+### AirSim 序列 3：第三人称跟随建图
 
 [![传感器第三人称跟随视角的 OctoMap 建图过程](media/airsim-sequence3-octomap-preview.gif)](media/airsim-sequence3-octomap.mp4)
 
 [观看 / 下载 AirSim 建图视频](media/airsim-sequence3-octomap.mp4)
+
+### AirSim 序列 3：全局建图视角
+
+[![AirSim 序列 3 的 OctoMap 全局建图过程](media/airsim-sequence3-global-preview.gif)](media/airsim-sequence3-global.mp4)
+
+[观看 / 下载全局视角视频](media/airsim-sequence3-global.mp4)
 
 ### TUM walking_xyz：特征跟踪
 

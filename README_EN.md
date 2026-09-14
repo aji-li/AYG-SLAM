@@ -6,11 +6,17 @@
 
 ## Recorded Demo
 
-### AirSim Sequence 3: OctoMap Mapping
+### AirSim Sequence 3: Third-Person Mapping
 
 [![OctoMap mapping from a third-person sensor-following view](media/airsim-sequence3-octomap-preview.gif)](media/airsim-sequence3-octomap.mp4)
 
 [Watch / download the AirSim mapping video](media/airsim-sequence3-octomap.mp4)
+
+### AirSim Sequence 3: Global Mapping View
+
+[![OctoMap construction from the global view](media/airsim-sequence3-global-preview.gif)](media/airsim-sequence3-global.mp4)
+
+[Watch / download the global-view video](media/airsim-sequence3-global.mp4)
 
 ### TUM walking_xyz: Feature Tracking
 
