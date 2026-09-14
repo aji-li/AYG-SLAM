@@ -633,8 +633,8 @@ void PointCloudMapping::publishDynamicBoxes(const std::vector<DynamicBox3D>& dyn
             meshMarker.scale.y = mConfig.dynamicMeshScale;
             meshMarker.scale.z = mConfig.dynamicMeshScale;
             meshMarker.color = cubeColor;
-            if(meshMarker.color.a <= 0.0f)
-                meshMarker.color.a = 1.0f;
+            // Keep the model legible inside the translucent bounding volume.
+            meshMarker.color.a = 1.0f;
             meshMarker.mesh_resource = mConfig.dynamicMeshResource;
             meshMarker.mesh_use_embedded_materials = mConfig.dynamicMeshUseEmbeddedMaterials;
             markerArray.markers.push_back(meshMarker);
@@ -655,6 +655,34 @@ void PointCloudMapping::publishDynamicBoxes(const std::vector<DynamicBox3D>& dyn
         cubeMarker.scale.z = std::max(0.01f, dynamicBox.size.z() * visualScale);
         cubeMarker.color = cubeColor;
         markerArray.markers.push_back(cubeMarker);
+
+        visualization_msgs::msg::Marker edgeMarker;
+        edgeMarker.header = cubeMarker.header;
+        edgeMarker.ns = "dynamic_boxes_edges";
+        edgeMarker.id = cubeMarker.id;
+        edgeMarker.type = visualization_msgs::msg::Marker::LINE_LIST;
+        edgeMarker.action = visualization_msgs::msg::Marker::ADD;
+        edgeMarker.pose = cubeMarker.pose;
+        edgeMarker.scale.x = std::max(0.001f, mConfig.dynamicBoxLineWidth);
+        edgeMarker.color = lineColor;
+        // Connect the 12 edges of the same box used by the volume marker.
+        for(int corner = 0; corner < 8; ++corner)
+        {
+            for(int axis = 0; axis < 3; ++axis)
+            {
+                if(corner & (1 << axis))
+                    continue;
+                for(const int endpoint : {corner, corner | (1 << axis)})
+                {
+                    geometry_msgs::msg::Point point;
+                    point.x = ((endpoint & 1) ? 0.5 : -0.5) * cubeMarker.scale.x;
+                    point.y = ((endpoint & 2) ? 0.5 : -0.5) * cubeMarker.scale.y;
+                    point.z = ((endpoint & 4) ? 0.5 : -0.5) * cubeMarker.scale.z;
+                    edgeMarker.points.push_back(point);
+                }
+            }
+        }
+        markerArray.markers.push_back(edgeMarker);
 
         visualization_msgs::msg::Marker textMarker;
         textMarker.header.frame_id = mConfig.worldFrameId;

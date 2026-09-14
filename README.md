@@ -8,8 +8,6 @@
 
 ### AirSim 序列 3：OctoMap 建图
 
-使用 `2024-08-01-duouav` 序列的 300 帧 RGB-D 数据运行。左侧为 RViz2 中随关键帧更新的 OctoMap 占据体素地图，按高度着色；右侧为图像特征跟踪与动态目标检测画面。体素分辨率为 1 米。
-
 [![AirSim 序列 3 的 OctoMap 建图过程](media/airsim-sequence3-octomap-preview.gif)](media/airsim-sequence3-octomap.mp4)
 
 [观看 / 下载 AirSim 建图视频](media/airsim-sequence3-octomap.mp4)

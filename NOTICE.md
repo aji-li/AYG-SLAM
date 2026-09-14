@@ -43,3 +43,7 @@ The AirSim video and previews were recorded with the project's simulation
 sequence `2024-08-01-duouav` (Sequence 3). They show AYG-SLAM image overlays and
 OctoMap occupancy mapping in RViz2. The recording adds panel labels; the
 previews are resized excerpts. AirSim: https://github.com/microsoft/AirSim.
+
+Dynamic-object visualization uses the `f250.dae` mesh credited in the project's
+asset notes to [Fast-Racing](https://github.com/ZJU-FAST-Lab/Fast-Racing/blob/main/src/plan_manage/misc/odom_visualization/meshes/f250.dae).
+The mesh is scaled for visibility and rendered at estimated object positions.
